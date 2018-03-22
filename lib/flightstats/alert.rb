@@ -11,6 +11,12 @@ module FlightStats
                               options), 'alert'
       end
 
+      def by_departure(carrier, flight_number, departure_airport, year, month, day, options = {})
+        from_response API.get("#{base_path}/create/#{carrier}/#{flight_number}/from/#{departure_airport}/departing/#{year}/#{month}/#{day}",
+                              required_params,
+                              options), 'alert'
+      end
+
       def delete_by_id(id, options = {})
         from_response API.get("#{base_path}/delete/#{id}",
                               {},
