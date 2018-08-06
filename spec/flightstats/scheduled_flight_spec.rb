@@ -9,9 +9,14 @@ describe FlightStats::ScheduledFlight do
   describe "by_carrier_and_flight_number_departing_on" do
     it "must find flight flights" do
       stub_api_request :get, FlightStats::ScheduledFlight.base_path, 'scheduled_flights'
-      flights = FlightStats::ScheduledFlight.by_carrier_and_flight_number_departing_on 'UA', '100', '2014', '07', '07' 
-      flights.first.should be_an_instance_of FlightStats::ScheduledFlight
-      flights.first.carrier_fs_code.should == 'UA'
+      flights = FlightStats::ScheduledFlight.by_carrier_and_flight_number_departing_on 'UA', '100', '2014', '07', '07'
+      flight = flights.first
+      flight.should be_an_instance_of FlightStats::ScheduledFlight
+      flight.carrier_fs_code.should == 'UA'
+      flight.arrival_airport_icao_code == 'KPDX'
+      flight.arrival_airport_iata_code == 'PDX'
+      flight.departure_airport_icao_code == 'KSFO'
+      flight.departure_airport_iata_code == 'SFO'
     end
   end
 
@@ -19,8 +24,13 @@ describe FlightStats::ScheduledFlight do
     it "must find flight flights" do
       stub_api_request :get, FlightStats::ScheduledFlight.base_path, 'scheduled_flights'
       flights = FlightStats::ScheduledFlight.by_carrier_and_flight_number_arriving_on 'UA', '100', '2014', '07', '07' 
-      flights.first.should be_an_instance_of FlightStats::ScheduledFlight
-      flights.first.carrier_fs_code.should == 'UA'
+      flight = flights.first
+      flight.should be_an_instance_of FlightStats::ScheduledFlight
+      flight.carrier_fs_code.should == 'UA'
+      flight.arrival_airport_icao_code == 'KPDX'
+      flight.arrival_airport_iata_code == 'PDX'
+      flight.departure_airport_icao_code == 'KSFO'
+      flight.departure_airport_iata_code == 'SFO'
     end
   end
 
@@ -28,8 +38,13 @@ describe FlightStats::ScheduledFlight do
     it "must find flight flights" do
       stub_api_request :get, FlightStats::ScheduledFlight.base_path, 'scheduled_flights'
       flights = FlightStats::ScheduledFlight.by_route_departing_on 'SFO', 'PDX', '2014', '07', '07' 
-      flights.first.should be_an_instance_of FlightStats::ScheduledFlight
-      flights.first.carrier_fs_code.should == 'UA'
+      flight = flights.first
+      flight.should be_an_instance_of FlightStats::ScheduledFlight
+      flight.carrier_fs_code.should == 'UA'
+      flight.arrival_airport_icao_code == 'KPDX'
+      flight.arrival_airport_iata_code == 'PDX'
+      flight.departure_airport_icao_code == 'KSFO'
+      flight.departure_airport_iata_code == 'SFO'
     end
   end
 
