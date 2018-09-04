@@ -20,7 +20,8 @@ module FlightStats
                   :service_type,
                   :service_classes,
                   :traffic_restrictions,
-                  :reference_code
+                  :reference_code,
+                  :airports
 
     @@base_path = "/flex/schedules/rest/v1/json"
 
@@ -59,10 +60,10 @@ module FlightStats
         @@base_path
       end
 
-      def add_icao_and_iata_airport_code(response, scheduled_flight)
+      def add_icao_and_iata_airport_code(response, scheduled_flights)
         appendix = from_response response, 'appendix'
         airports = appendix.airports
-        scheduled_flight.each do |sf|
+        scheduled_flights.each do |sf|
           departure_airport = airports.detect { |airport| airport.fs == sf.departure_airport_fs_code }
           sf.departure_airport_icao_code = departure_airport.icao
           sf.departure_airport_iata_code = departure_airport.iata
@@ -70,12 +71,22 @@ module FlightStats
           sf.arrival_airport_icao_code = arrival_airport.icao
           sf.arrival_airport_iata_code = arrival_airport.iata
         end
-        scheduled_flight
+        scheduled_flights
+      end
+
+      def add_airports_info(response, scheduled_flights)
+        appendix = from_response response, 'appendix'
+        airports = appendix.airports
+        scheduled_flights.each do |sf|
+          sf.airports = airports
+        end
+        scheduled_flights
       end
 
       def parse_response(response)
-        scheduled_flight = from_response response, 'scheduledFlights'
-        add_icao_and_iata_airport_code(response, scheduled_flight)
+        scheduled_flights = from_response response, 'scheduledFlights'
+        add_icao_and_iata_airport_code(response, scheduled_flights)
+        add_airports_info(response, scheduled_flights)
       end
     end
   end

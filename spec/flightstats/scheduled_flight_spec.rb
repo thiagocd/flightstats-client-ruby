@@ -45,6 +45,7 @@ describe FlightStats::ScheduledFlight do
       flight.arrival_airport_iata_code == 'PDX'
       flight.departure_airport_icao_code == 'KSFO'
       flight.departure_airport_iata_code == 'SFO'
+      flight.airports.count == 2
     end
   end
 
