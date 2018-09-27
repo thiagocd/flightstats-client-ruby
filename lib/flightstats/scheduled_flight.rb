@@ -21,7 +21,9 @@ module FlightStats
                   :service_classes,
                   :traffic_restrictions,
                   :reference_code,
-                  :airports
+                  :airports,
+                  :airline_icao_code,
+                  :airline_iata_code
 
     @@base_path = "/flex/schedules/rest/v1/json"
 
@@ -74,6 +76,17 @@ module FlightStats
         scheduled_flights
       end
 
+      def add_icao_and_iata_airline_code(response, scheduled_flights)
+        appendix = from_response response, 'appendix'
+        airlines = appendix.airlines
+        scheduled_flights.each do |sf|
+          airline = airlines.detect { |airline| airline.fs == sf.carrier_fs_code }
+          sf.airline_icao_code = airline.icao
+          sf.airline_iata_code = airline.iata
+        end
+        scheduled_flights
+      end
+
       def add_airports_info(response, scheduled_flights)
         appendix = from_response response, 'appendix'
         airports = appendix.airports
@@ -86,6 +99,7 @@ module FlightStats
       def parse_response(response)
         scheduled_flights = from_response response, 'scheduledFlights'
         add_icao_and_iata_airport_code(response, scheduled_flights)
+        add_icao_and_iata_airline_code(response, scheduled_flights)
         add_airports_info(response, scheduled_flights)
       end
     end

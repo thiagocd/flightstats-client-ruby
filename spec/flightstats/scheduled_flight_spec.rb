@@ -31,6 +31,8 @@ describe FlightStats::ScheduledFlight do
       flight.arrival_airport_iata_code == 'PDX'
       flight.departure_airport_icao_code == 'KSFO'
       flight.departure_airport_iata_code == 'SFO'
+      flight.airline_iata_code == "UA"
+      flight.airline_icao_code == "UAL"
     end
   end
 
