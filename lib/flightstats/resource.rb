@@ -67,7 +67,7 @@ module FlightStats
 
       def from_parsed_json(json, model_string)
         # Optimization - native type, nothing to build so bail early
-        if json.is_a? FalseClass or json.is_a? TrueClass or json.is_a? Fixnum or json.is_a? String
+        if json.is_a? FalseClass or json.is_a? TrueClass or json.is_a? Integer or json.is_a? String
           return json
         elsif json.is_a? Array
           value = []
