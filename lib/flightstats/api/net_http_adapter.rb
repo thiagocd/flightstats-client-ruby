@@ -82,6 +82,11 @@ module FlightStats
           response = http.start { http.request request }
           code = response.code.to_i
 
+          json = (JSON.parse(response.body) if response && !response.body.empty?)
+          if json and json['error'] and json['error']['httpStatusCode']
+            code = json['error']['httpStatusCode'].to_i
+          end
+
           if FlightStats.logger
             latency = (Time.now - start_time) * 1_000
             level = case code

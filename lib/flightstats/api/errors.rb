@@ -12,18 +12,14 @@ module FlightStats
         @request, @response = request, response
       end
 
-      def code
-        response.code.to_i if response
-      end
-
       def to_s
         if description
           return CGI.unescapeHTML [description, details].compact.join(' ')
         end
 
-        return super unless code
+        return super unless http_status_code
         "%d %s (%s %s)" % [
-          code, http_error, request.method, API.base_uri + request.path
+            http_status_code, http_error, request.method, API.base_uri + request.path
         ]
       end
 
@@ -33,6 +29,10 @@ module FlightStats
 
       def code
         json and json['error'] and json['error']['errorCode']
+      end
+
+      def http_status_code
+        json and json['error'] and json['error']['httpStatusCode']
       end
 
       private
